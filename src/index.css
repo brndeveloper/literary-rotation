@@ -1,2 +1,18 @@
 @tailwind base;
 @tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: "Baskervville";
+    src: url("/src/assets/fonts/Baskervville-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Baskervville";
+    src: url("/src/assets/fonts/Baskervville-Italic.ttf") format("truetype");
+    font-weight: 400;
+    font-style: italic;
+  }
+}
