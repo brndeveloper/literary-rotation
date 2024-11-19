@@ -3,16 +3,23 @@
 
 @layer base {
   @font-face {
-    font-family: "Baskervville";
-    src: url("/src/assets/fonts/Baskervville-Regular.ttf") format("truetype");
+    font-family: "LibreCaslon";
+    src: url("/src/assets/fonts/LibreCaslonText-Regular.ttf") format("truetype");
     font-weight: 400;
     font-style: normal;
   }
 
   @font-face {
-    font-family: "Baskervville";
-    src: url("/src/assets/fonts/Baskervville-Italic.ttf") format("truetype");
+    font-family: "LibreCaslon";
+    src: url("/src/assets/fonts/LibreCaslonText-Italic.ttf") format("truetype");
     font-weight: 400;
     font-style: italic;
+  }
+
+  @font-face {
+    font-family: "LibreCaslon";
+    src: url("/src/assets/fonts/LibreCaslonText-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
   }
 }
