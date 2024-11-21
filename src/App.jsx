@@ -1,7 +1,9 @@
+import Navbar from "./components/Navbar";
+
 function App() {
   return (
     <div>
-      <h1 className="mt-2 p-6">Rotação Literária!</h1>
+      <Navbar />
     </div>
   );
 }
