@@ -7,8 +7,9 @@ const ProfileButton = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  const toggleMenu = (event) => {
+    event.stopPropagation();
+    setIsMenuOpen((prevState) => !prevState);
   };
 
   const handleClickOutside = (event) => {
@@ -28,7 +29,7 @@ const ProfileButton = () => {
     <div className="relative">
       <button
         onClick={toggleMenu}
-        className="flex items-center gap-2 rounded-full border border-black bg-cover bg-center p-2"
+        className="flex items-center gap-2 rounded-full border-2 border-black bg-cover bg-center p-2"
         style={{ backgroundImage: `url('${woodTexture}')` }}
       >
         <DefaultProfileIcon />
@@ -39,7 +40,7 @@ const ProfileButton = () => {
 
       <div
         ref={menuRef}
-        className="absolute right-0 mt-2 w-48 rounded border border-black bg-cover bg-center shadow-lg transition-all duration-300 ease-in-out"
+        className="absolute right-0 mt-2 w-48 rounded border-2 border-black bg-cover bg-center shadow-lg transition-all duration-300 ease-in-out"
         style={{
           backgroundImage: `url('${woodTexture}')`,
           opacity: isMenuOpen ? 1 : 0,
