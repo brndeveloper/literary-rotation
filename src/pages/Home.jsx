@@ -1,3 +1,4 @@
+import MainContent from "../components/MainContent";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import "../styles/CustomScrollbar.css";
@@ -8,6 +9,7 @@ function HomePage() {
       <Navbar />
       <div className="flex flex-1">
         <Sidebar className="hidden h-full w-1/4 overflow-auto md:block" />
+        <MainContent className="h-full flex-1 overflow-hidden" />
       </div>
     </div>
   );
