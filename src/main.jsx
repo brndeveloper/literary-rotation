@@ -1,13 +1,23 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-import App from "./App.jsx";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
+import BookAdvertisePage from "./pages/BookAdvertise.jsx";
+import HomePage from "./pages/Home.jsx";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <HomePage />,
+  },
+  {
+    path: "/anunciar",
+    element: <BookAdvertisePage />,
+  },
+]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <RouterProvider router={router} />
   </StrictMode>
 );
