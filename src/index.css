@@ -26,4 +26,17 @@
   body {
     @apply bg-[#e0dccb];
   }
+
+  @screen sm {
+    body {
+      transform: scale(1);
+    }
+  }
+
+  @media (max-width: 640px) {
+    body {
+      transform: scale(0.6);
+      transform-origin: top left;
+    }
+  }
 }
