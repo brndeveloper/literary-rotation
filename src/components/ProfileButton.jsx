@@ -1,11 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
+import data from "../../db.json";
 import DefaultProfileIcon from "../assets/icons/profile-default.svg?react";
 import woodTexture from "../assets/images/retina-wood.png";
 
 const ProfileButton = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const buttonRef = useRef(null);
+  const users = data.users;
+
+  const getUser = () => {
+    const user = users.find((user) => user.id === 6);
+    return user ? user.user : "admin";
+  };
 
   const toggleMenu = (event) => {
     event.stopPropagation();
@@ -13,7 +21,12 @@ const ProfileButton = () => {
   };
 
   const handleClickOutside = (event) => {
-    if (menuRef.current && !menuRef.current.contains(event.target)) {
+    if (
+      menuRef.current &&
+      !menuRef.current.contains(event.target) &&
+      buttonRef.current &&
+      !buttonRef.current.contains(event.target)
+    ) {
       setIsMenuOpen(false);
     }
   };
@@ -28,12 +41,13 @@ const ProfileButton = () => {
   return (
     <div className="relative">
       <button
+        ref={buttonRef}
         onClick={toggleMenu}
         className="flex items-center gap-2 rounded-full border-2 border-black bg-cover bg-center p-2"
         style={{ backgroundImage: `url('${woodTexture}')` }}
       >
         <DefaultProfileIcon />
-        <span>john94</span>
+        <span>{getUser()}</span>
         <span>&#9660;</span>
         <div className="absolute inset-0 rounded-full bg-amber-600 opacity-0 transition-opacity duration-300 hover:opacity-15"></div>
       </button>
