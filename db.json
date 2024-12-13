@@ -1,0 +1,111 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "user": "user_tal1",
+      "books": [1]
+    },
+    {
+      "id": 2,
+      "user": "user_tal2",
+      "books": [2]
+    },
+    {
+      "id": 3,
+      "user": "user_tal3",
+      "books": [3]
+    },
+    {
+      "id": 4,
+      "user": "user_tal4",
+      "books": [4]
+    },
+    {
+      "id": 5,
+      "user": "user_tal5",
+      "books": [5]
+    },
+    {
+      "id": 6,
+      "user": "john94",
+      "books": []
+    }
+  ],
+  "books": [
+    {
+      "id": 1,
+      "ownerId": 1,
+      "title": "O Senhor dos Anéis",
+      "description": "Livro que diz tal coisa",
+      "genres": ["ficcao"],
+      "condition": "usado",
+      "price": 23.4,
+      "images": ["/uploads/books/1/senhor_dos_aneis_1.jpg"],
+      "location": {
+        "state": "Ceará",
+        "city": "Maracanaú"
+      },
+      "createdAt": "2024-12-10T09:33:00Z"
+    },
+    {
+      "id": 2,
+      "ownerId": 2,
+      "title": "O Senhor dos Anéis 2",
+      "description": "Livro que diz tal coisa",
+      "genres": ["ficcao"],
+      "condition": "usado",
+      "price": 21.6,
+      "images": ["/uploads/books/2/senhor_dos_aneis_1.jpg"],
+      "location": {
+        "state": "Ceará",
+        "city": "Pacatuba"
+      },
+      "createdAt": "2024-12-11T05:30:00Z"
+    },
+    {
+      "id": 3,
+      "ownerId": 3,
+      "title": "O Senhor dos Anéis 3",
+      "description": "Livro que diz tal coisa",
+      "genres": ["ficcao"],
+      "condition": "usado",
+      "price": 25.19,
+      "images": ["/uploads/books/3/senhor_dos_aneis_1.jpg"],
+      "location": {
+        "state": "Ceará",
+        "city": "Caucaia"
+      },
+      "createdAt": "2024-12-11T14:25:55Z"
+    },
+    {
+      "id": 4,
+      "ownerId": 4,
+      "title": "O Senhor dos Anéis 4",
+      "description": "Livro que diz tal coisa",
+      "genres": ["ficcao"],
+      "condition": "usado",
+      "price": 28.15,
+      "images": ["/uploads/books/4/senhor_dos_aneis_1.jpg"],
+      "location": {
+        "state": "Ceará",
+        "city": "Caucaia"
+      },
+      "createdAt": "2024-12-12T02:33:23Z"
+    },
+    {
+      "id": 5,
+      "ownerId": 5,
+      "title": "O Senhor dos Anéis 4",
+      "description": "Livro que diz tal coisa",
+      "genres": ["ficcao"],
+      "condition": "usado",
+      "price": 22.95,
+      "images": ["/uploads/books/5/senhor_dos_aneis_1.jpg"],
+      "location": {
+        "state": "São Paulo",
+        "city": "Campinas"
+      },
+      "createdAt": "2024-12-05T02:01:51Z"
+    }
+  ]
+}
