@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { useRef, useState } from "react";
+import { useFormContext } from "react-hook-form";
 import Input from "./Input";
 
 const BookLocationForm = ({
@@ -12,6 +13,7 @@ const BookLocationForm = ({
   const [cep, setCep] = useState("");
   const [location, setLocation] = useState("");
   const [isInputDisabled, setIsInputDisabled] = useState(false);
+  const { setValue } = useFormContext();
   const inputRef = useRef(null);
 
   const formatCep = (value) => {
@@ -33,9 +35,13 @@ const BookLocationForm = ({
       const cache = localStorage.getItem(cep);
       if (cache) {
         const cachedData = JSON.parse(cache);
-        setLocation(`${cachedData.estado}, ${cachedData.localidade}`);
-        setCep(`${cep.slice(0, 5)}-${cep.slice(5)}`);
+        setLocation(`${cachedData.state}, ${cachedData.city}`);
+        setCep(cachedData);
         setIsInputDisabled(true);
+        setValue("location", {
+          state: cachedData.state,
+          city: cachedData.city,
+        });
         return cachedData;
       }
 
@@ -46,15 +52,19 @@ const BookLocationForm = ({
         localStorage.setItem(
           cep,
           JSON.stringify({
-            estado: data.estado,
-            localidade: data.localidade,
+            state: data.estado,
+            city: data.localidade,
           })
         );
         console.log("Dados obtidos da API:", data);
 
         setLocation(`${data.estado}, ${data.localidade}`);
-        setCep(`${cep.slice(0, 5)}-${cep.slice(5)}`);
+        setCep(data);
         setIsInputDisabled(true);
+        setValue("location", {
+          state: data.estado,
+          city: data.localidade,
+        });
         return data;
       }
 
@@ -87,8 +97,10 @@ const BookLocationForm = ({
     ? register("location", {
         required: "CEP é obrigatório.",
         validate: (value) => {
-          if (!value.trim()) return "CEP não pode estar vazio.";
-          if (value.length < 9) return "CEP está incompleto.";
+          if (typeof value === "string" && !value.trim())
+            return "CEP não pode estar vazio.";
+          if (typeof value === "string" && value.length < 9)
+            return "CEP está incompleto.";
           return true;
         },
         onChange: (e) => {
