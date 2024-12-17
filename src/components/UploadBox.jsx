@@ -3,7 +3,7 @@ import { useState } from "react";
 import RemoveIcon from "../assets/icons/close.svg?react";
 import InputErrorMessage from "./InputErrorMessage";
 
-const UploadBox = ({ id, register, trigger, errorMessage }) => {
+const UploadBox = ({ id, register, trigger, errorMessage, onImagesChange }) => {
   const [uploadedImages, setUploadedImages] = useState([]);
   const [removingIndex, setRemovingIndex] = useState(null);
   const maxFiles = 6;
@@ -25,6 +25,7 @@ const UploadBox = ({ id, register, trigger, errorMessage }) => {
 
     setUploadedImages((prevImages) => {
       const updatedImages = [...prevImages, ...newImages];
+      onImagesChange(updatedImages);
       setTimeout(() => {
         trigger("upload");
       }, 0);
@@ -37,6 +38,7 @@ const UploadBox = ({ id, register, trigger, errorMessage }) => {
     setTimeout(() => {
       setUploadedImages((prevImages) => {
         const updatedImages = prevImages.filter((_, i) => i !== index);
+        onImagesChange(updatedImages);
         setTimeout(() => {
           trigger("upload");
         }, 0);
@@ -153,6 +155,7 @@ const UploadBox = ({ id, register, trigger, errorMessage }) => {
 };
 
 UploadBox.propTypes = {
+  onImagesChange: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   register: PropTypes.func,
   trigger: PropTypes.func,
