@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import db from "../../db.json";
 import BookLocationForm from "../components/BookLocationForm";
@@ -19,11 +19,27 @@ function BookAdvertisePage() {
     register,
     formState: { errors },
     trigger,
-    setError,
     handleSubmit,
+    reset,
   } = methods;
 
   const [images, setImages] = useState();
+  const [resetKey, setResetKey] = useState(0);
+  const [isReset, setIsReset] = useState(false);
+
+  const handleImagesChange = useCallback((newImages) => {
+    setImages(newImages);
+  }, []);
+
+  const handleResetForm = () => {
+    reset();
+    setResetKey((prevKey) => prevKey + 1);
+    setIsReset(true);
+
+    setTimeout(() => {
+      setIsReset(false);
+    }, 200);
+  };
 
   const getBookId = () => {
     const lastId = db.books.reduce(
@@ -78,8 +94,6 @@ function BookAdvertisePage() {
     const result = await uploadResponse.json();
     const imagePaths = result.imagePaths;
 
-    console.log(data.location);
-
     const book = {
       id: bookId,
       ownerId: 6,
@@ -103,6 +117,7 @@ function BookAdvertisePage() {
 
     if (response.ok) {
       console.log("Livro adicionado com sucesso!");
+      handleResetForm();
     } else {
       const errorMessage = await response.text();
       console.error("Erro ao adicionar livro:", errorMessage);
@@ -126,7 +141,8 @@ function BookAdvertisePage() {
                   register={register}
                   trigger={trigger}
                   errorMessage={errors?.upload?.message}
-                  onImagesChange={setImages}
+                  onImagesChange={handleImagesChange}
+                  resetKey={resetKey}
                 />
                 <Input
                   id="title"
@@ -184,15 +200,28 @@ function BookAdvertisePage() {
                   register={register}
                   trigger={trigger}
                   errorMessage={errors?.price?.message}
+                  isReset={isReset}
                 />
                 <BookLocationForm
                   id="location-adv"
                   register={register}
                   trigger={trigger}
                   errorMessage={errors?.location?.message}
-                  setError={setError}
+                  isReset={isReset}
                 />
-                <Button>Anunciar</Button>
+                <div className="flex">
+                  <Button
+                    position="left"
+                    variant="danger"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      handleResetForm();
+                    }}
+                  >
+                    Limpar
+                  </Button>
+                  <Button position="right">Anunciar</Button>
+                </div>
               </div>
             </div>
           </form>
