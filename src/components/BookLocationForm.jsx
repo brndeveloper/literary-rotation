@@ -1,20 +1,15 @@
 import PropTypes from "prop-types";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import Input from "./Input";
 
-const BookLocationForm = ({
-  id,
-  register,
-  trigger,
-  errorMessage,
-  setError,
-}) => {
+const BookLocationForm = ({ id, register, trigger, errorMessage, isReset }) => {
   const [cep, setCep] = useState("");
   const [location, setLocation] = useState("");
   const [isInputDisabled, setIsInputDisabled] = useState(false);
   const { setValue } = useFormContext();
   const inputRef = useRef(null);
+  const [isValid, setIsValid] = useState(false);
 
   const formatCep = (value) => {
     const numericValue = value.replace(/\D/g, "");
@@ -26,7 +21,7 @@ const BookLocationForm = ({
 
   const calculateInputWidth = () => {
     const baseWidth = 100;
-    const additionalWidth = location.length * 8;
+    const additionalWidth = location.length * 6;
     return baseWidth + additionalWidth;
   };
 
@@ -42,6 +37,7 @@ const BookLocationForm = ({
           state: cachedData.state,
           city: cachedData.city,
         });
+        setIsValid(true);
         return cachedData;
       }
 
@@ -56,7 +52,6 @@ const BookLocationForm = ({
             city: data.localidade,
           })
         );
-        console.log("Dados obtidos da API:", data);
 
         setLocation(`${data.estado}, ${data.localidade}`);
         setCep(data);
@@ -65,12 +60,14 @@ const BookLocationForm = ({
           state: data.estado,
           city: data.localidade,
         });
+        setIsValid(true);
         return data;
       }
 
       throw new Error("CEP não encontrado");
     } catch {
-      setError("location", { type: "manual", message: "CEP não encontrado." });
+      setIsValid(false);
+      if (trigger) trigger("location");
     }
   };
 
@@ -86,17 +83,29 @@ const BookLocationForm = ({
     }
   };
 
-  const handleEditClick = () => {
+  const handleEditClick = (isReset = false) => {
     setIsInputDisabled(false);
     setCep("");
     setLocation("");
-    setTimeout(() => inputRef.current?.focus(), 0);
+
+    if (!isReset) {
+      setTimeout(() => inputRef.current?.focus(), 0);
+    }
   };
+
+  useEffect(() => {
+    if (isReset) {
+      handleEditClick(true);
+    }
+  }, [isReset]);
 
   const simpleRegisterProps = register
     ? register("location", {
         required: "CEP é obrigatório.",
         validate: (value) => {
+          if (typeof value === "string" && value.length === 9 && !isValid) {
+            return "CEP não encontrado.";
+          }
           if (typeof value === "string" && !value.trim())
             return "CEP não pode estar vazio.";
           if (typeof value === "string" && value.length < 9)
@@ -112,7 +121,7 @@ const BookLocationForm = ({
 
   return (
     <div>
-      <div className="relative">
+      <div className="flex items-center">
         <Input
           id={id}
           ref={inputRef}
@@ -130,15 +139,15 @@ const BookLocationForm = ({
           }}
           onBlur={() => {
             if (simpleRegisterProps.onBlur && trigger)
-              simpleRegisterProps.onBlur;
+              simpleRegisterProps.onBlur();
           }}
           errorMessage={errorMessage}
           {...simpleRegisterProps}
         />
         {isInputDisabled && location && (
           <span
-            onClick={handleEditClick}
-            className="absolute right-32 top-10 -translate-y-1/2 transform cursor-pointer text-sm text-[#6B6059] underline transition duration-200 hover:text-[#5a524d]"
+            onClick={() => handleEditClick()}
+            className="mr-20 mt-1 cursor-pointer text-sm text-[#6B6059] underline transition duration-200 hover:text-[#5a524d]"
           >
             Editar CEP
           </span>
@@ -153,7 +162,7 @@ BookLocationForm.propTypes = {
   register: PropTypes.func,
   trigger: PropTypes.func,
   errorMessage: PropTypes.string,
-  setError: PropTypes.func,
+  isReset: PropTypes.bool,
 };
 
 export default BookLocationForm;
