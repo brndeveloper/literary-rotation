@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useFormContext } from "react-hook-form";
 import SearchFilterIcon from "../assets/icons/search-filter.svg?react";
 import FieldLabel from "./FieldLabel";
 import InputErrorMessage from "./InputErrorMessage";
@@ -10,8 +11,10 @@ const SidebarPriceFilter = ({
   register,
   trigger,
   errorMessage,
+  isReset,
 }) => {
   const [price, setPrice] = useState("");
+  const { setValue } = useFormContext() || {};
 
   const formatPrice = (value) => {
     const numericValue = value.replace(/\D/g, "");
@@ -34,6 +37,16 @@ const SidebarPriceFilter = ({
     const formattedValue = formatPrice(inputValue);
     setPrice(formattedValue);
   };
+
+  const handleReset = useCallback(() => {
+    const resetValue = "0,00";
+    setValue("price", resetValue);
+    setPrice(resetValue);
+  }, [setValue]);
+
+  useEffect(() => {
+    if (isReset) handleReset();
+  }, [isReset, handleReset]);
 
   const simpleRegisterProps = register
     ? register("price", {
@@ -110,6 +123,7 @@ SidebarPriceFilter.propTypes = {
   register: PropTypes.func,
   trigger: PropTypes.func,
   errorMessage: PropTypes.string,
+  isReset: PropTypes.bool,
 };
 
 export default SidebarPriceFilter;
