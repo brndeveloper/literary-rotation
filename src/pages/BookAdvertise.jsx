@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import db from "../../db.json";
 import BookLocationForm from "../components/BookLocationForm";
 import Button from "../components/Button";
@@ -116,11 +117,10 @@ function BookAdvertisePage() {
     });
 
     if (response.ok) {
-      console.log("Livro adicionado com sucesso!");
+      toast.success("Livro anunciado com sucesso!");
       handleResetForm();
     } else {
-      const errorMessage = await response.text();
-      console.error("Erro ao adicionar livro:", errorMessage);
+      toast.error("Erro ao anunciar o livro.");
     }
   };
 
