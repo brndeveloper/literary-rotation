@@ -18,7 +18,7 @@ function BookAdvertisePage() {
 
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     trigger,
     handleSubmit,
     reset,
@@ -143,11 +143,13 @@ function BookAdvertisePage() {
                   errorMessage={errors?.upload?.message}
                   onImagesChange={handleImagesChange}
                   resetKey={resetKey}
+                  isSubmitting={isSubmitting}
                 />
                 <Input
                   id="title"
                   label="Título do livro"
                   placeholder="Ex.: O Homem Invisível"
+                  disabled={isSubmitting}
                   isRequired={true}
                   {...register("title", {
                     required: "O título do livro é obrigatório.",
@@ -165,6 +167,7 @@ function BookAdvertisePage() {
                   id="description"
                   label="Descrição"
                   placeholder="Ex.: Descrição do livro, conservação, etc."
+                  disabled={isSubmitting}
                   isRequired={true}
                   {...register("description", {
                     required: "A descrição do livro é obrigatória.",
@@ -183,6 +186,7 @@ function BookAdvertisePage() {
                   advertise={true}
                   register={register}
                   trigger={trigger}
+                  disabled={isSubmitting}
                   errorMessage={errors?.genres?.message}
                   customErrorMessage="Pelo menos um gênero deve ser selecionado."
                 />
@@ -191,6 +195,7 @@ function BookAdvertisePage() {
                   advertise={true}
                   register={register}
                   trigger={trigger}
+                  disabled={isSubmitting}
                   errorMessage={errors?.condition?.message}
                   customErrorMessage="A condição do livro é obrigatória."
                 />
@@ -199,6 +204,7 @@ function BookAdvertisePage() {
                   advertise={true}
                   register={register}
                   trigger={trigger}
+                  disabled={isSubmitting}
                   errorMessage={errors?.price?.message}
                   isReset={isReset}
                 />
@@ -206,6 +212,7 @@ function BookAdvertisePage() {
                   id="location-adv"
                   register={register}
                   trigger={trigger}
+                  disabled={isSubmitting}
                   errorMessage={errors?.location?.message}
                   isReset={isReset}
                 />
@@ -213,6 +220,7 @@ function BookAdvertisePage() {
                   <Button
                     position="left"
                     variant="danger"
+                    disabled={isSubmitting}
                     onClick={(event) => {
                       event.preventDefault();
                       handleResetForm();
@@ -220,7 +228,13 @@ function BookAdvertisePage() {
                   >
                     Limpar
                   </Button>
-                  <Button position="right">Anunciar</Button>
+                  <Button
+                    position="right"
+                    disabled={isSubmitting}
+                    isSubmitting={isSubmitting}
+                  >
+                    Anunciar
+                  </Button>
                 </div>
               </div>
             </div>

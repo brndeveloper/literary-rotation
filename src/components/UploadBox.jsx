@@ -9,6 +9,7 @@ const UploadBox = ({
   trigger,
   errorMessage,
   onImagesChange,
+  isSubmitting,
   resetKey,
 }) => {
   const [uploadedImages, setUploadedImages] = useState([]);
@@ -61,7 +62,7 @@ const UploadBox = ({
     }, 300);
   };
 
-  const isUploadDisabled = uploadedImages.length >= maxFiles;
+  const isUploadDisabled = uploadedImages.length >= maxFiles || isSubmitting;
 
   const simpleRegisterProps = register
     ? register("upload", {
@@ -99,7 +100,9 @@ const UploadBox = ({
           />
         </svg>
         <p className="mt-2 text-sm font-semibold text-[#6B6059]">
-          {isUploadDisabled ? (
+          {isUploadDisabled && isSubmitting ? (
+            "Não é possível enviar imagens no momento"
+          ) : isUploadDisabled ? (
             "Máximo de imagens atingido"
           ) : (
             <>
@@ -174,6 +177,7 @@ UploadBox.propTypes = {
   register: PropTypes.func,
   trigger: PropTypes.func,
   errorMessage: PropTypes.string,
+  isSubmitting: PropTypes.bool,
 };
 
 export default UploadBox;

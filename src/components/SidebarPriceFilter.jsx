@@ -10,6 +10,7 @@ const SidebarPriceFilter = ({
   advertise,
   register,
   trigger,
+  disabled,
   errorMessage,
   isReset,
 }) => {
@@ -91,6 +92,7 @@ const SidebarPriceFilter = ({
               className={`${inputClasses} mb-4`}
               onChange={handlePriceChange}
               value={price}
+              disabled={disabled}
               onBlur={() => {
                 if (simpleRegisterProps.onBlur && trigger) {
                   trigger("price");
@@ -122,6 +124,7 @@ SidebarPriceFilter.propTypes = {
   advertise: PropTypes.bool,
   register: PropTypes.func,
   trigger: PropTypes.func,
+  disabled: PropTypes.bool,
   errorMessage: PropTypes.string,
   isReset: PropTypes.bool,
 };

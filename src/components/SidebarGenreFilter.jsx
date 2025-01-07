@@ -10,6 +10,7 @@ const SideBarGenreFilter = ({
   customErrorMessage,
   advertise,
   trigger,
+  disabled,
 }) => {
   const genres = [
     { value: "ficcao", label: "Ficção" },
@@ -65,6 +66,7 @@ const SideBarGenreFilter = ({
             id={`${id}-${option.value}`}
             key={option.value}
             name="genres"
+            disabled={disabled}
             value={option.value}
             label={option.label}
             trigger={effectiveTrigger}
@@ -83,6 +85,7 @@ SideBarGenreFilter.propTypes = {
   register: PropTypes.func,
   errorMessage: PropTypes.string,
   trigger: PropTypes.func,
+  disabled: PropTypes.bool,
   customErrorMessage: PropTypes.string,
 };
 

@@ -7,6 +7,7 @@ const SidebarConditionFilter = ({
   id,
   register,
   trigger,
+  disabled,
   errorMessage,
   customErrorMessage,
   advertise,
@@ -50,6 +51,7 @@ const SidebarConditionFilter = ({
             id={`${id}-${condition.value}`}
             key={condition.value}
             name="condition"
+            disabled={disabled}
             value={condition.value}
             label={condition.label}
             advertise={true}
@@ -68,6 +70,7 @@ SidebarConditionFilter.propTypes = {
   advertise: PropTypes.bool,
   register: PropTypes.func,
   trigger: PropTypes.func,
+  disabled: PropTypes.bool,
   errorMessage: PropTypes.string,
   customErrorMessage: PropTypes.string,
 };

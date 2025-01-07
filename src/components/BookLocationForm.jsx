@@ -3,13 +3,21 @@ import { useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import Input from "./Input";
 
-const BookLocationForm = ({ id, register, trigger, errorMessage, isReset }) => {
+const BookLocationForm = ({
+  id,
+  register,
+  trigger,
+  disabled,
+  errorMessage,
+  isReset,
+}) => {
   const [cep, setCep] = useState("");
   const [location, setLocation] = useState("");
   const [isInputDisabled, setIsInputDisabled] = useState(false);
   const { setValue } = useFormContext();
   const inputRef = useRef(null);
   const [isValid, setIsValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const formatCep = (value) => {
     const numericValue = value.replace(/\D/g, "");
@@ -71,15 +79,30 @@ const BookLocationForm = ({ id, register, trigger, errorMessage, isReset }) => {
     }
   };
 
-  const handleChange = (event) => {
+  const handleChange = async (event) => {
     const value = event.target.value;
     const formattedValue = formatCep(value);
     setCep(formattedValue);
 
     if (formattedValue.length === 9) {
+      setIsLoading(true);
+
+      setTimeout(() => {
+        if (trigger) trigger("location");
+      }, 0);
+
       const cepNumber = formattedValue.replace("-", "");
-      searchCep(cepNumber);
-      if (trigger) trigger("location");
+
+      try {
+        await searchCep(cepNumber);
+      } catch (error) {
+        console.error("Erro ao buscar CEP:", error);
+      } finally {
+        setIsLoading(false);
+        setTimeout(() => {
+          if (trigger) trigger("location");
+        }, 0);
+      }
     }
   };
 
@@ -103,7 +126,15 @@ const BookLocationForm = ({ id, register, trigger, errorMessage, isReset }) => {
     ? register("location", {
         required: "CEP é obrigatório.",
         validate: (value) => {
-          if (typeof value === "string" && value.length === 9 && !isValid) {
+          if (isLoading) {
+            return "Validando CEP...";
+          }
+          if (
+            typeof value === "string" &&
+            value.length === 9 &&
+            !isLoading &&
+            !isValid
+          ) {
             return "CEP não encontrado.";
           }
           if (typeof value === "string" && !value.trim())
@@ -131,7 +162,7 @@ const BookLocationForm = ({ id, register, trigger, errorMessage, isReset }) => {
           placeholder="CEP"
           value={location || cep}
           maxLength="10"
-          disabled={isInputDisabled}
+          disabled={isInputDisabled || isLoading}
           style={{ width: `${calculateInputWidth()}px` }}
           onChange={(e) => {
             if (simpleRegisterProps.onChange) simpleRegisterProps.onChange(e);
@@ -144,7 +175,7 @@ const BookLocationForm = ({ id, register, trigger, errorMessage, isReset }) => {
           errorMessage={errorMessage}
           {...simpleRegisterProps}
         />
-        {isInputDisabled && location && (
+        {isInputDisabled && location && !disabled && (
           <span
             onClick={() => handleEditClick()}
             className="mr-20 mt-1 cursor-pointer text-sm text-[#6B6059] underline transition duration-200 hover:text-[#5a524d]"
@@ -161,6 +192,7 @@ BookLocationForm.propTypes = {
   id: PropTypes.string.isRequired,
   register: PropTypes.func,
   trigger: PropTypes.func,
+  disabled: PropTypes.bool,
   errorMessage: PropTypes.string,
   isReset: PropTypes.bool,
 };

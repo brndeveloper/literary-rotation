@@ -6,6 +6,7 @@ const FilterOption = ({
   value,
   label,
   name,
+  disabled,
   register = () => ({}),
   advertise,
   trigger = () => ({}),
@@ -18,7 +19,8 @@ const FilterOption = ({
         type={advertise ? "radio" : "checkbox"}
         name={name}
         value={value}
-        className="peer relative mr-2 h-4 w-4 shrink-0 cursor-pointer appearance-none rounded-sm border-2 border-[#3c3933] bg-[#9d988b] checked:bg-[#5a524d] focus:outline-none focus:ring-0 focus:ring-offset-1 focus:ring-offset-black"
+        disabled={disabled}
+        className={`peer relative mr-2 h-4 w-4 shrink-0 ${disabled ? "cursor-not-allowed" : "cursor-pointer"} appearance-none rounded-sm border-2 border-[#3c3933] bg-[#9d988b] checked:bg-[#5a524d] focus:outline-none focus:ring-0 focus:ring-offset-1 focus:ring-offset-black`}
         {...register(name, {
           validate: {
             required: () => {
@@ -48,6 +50,7 @@ FilterOption.propTypes = {
   value: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
   register: PropTypes.func,
   trigger: PropTypes.func,
   customErrorMessage: PropTypes.string,

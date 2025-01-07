@@ -1,9 +1,12 @@
 import PropTypes from "prop-types";
+import LoaderIcon from "../assets/icons/loader.svg?react";
 
 const Button = ({
   children,
   variant = "default",
   position = "left",
+  isSubmitting,
+  disabled,
   ...rest
 }) => {
   const variantClasses = {
@@ -19,9 +22,11 @@ const Button = ({
 
   return (
     <button
-      className={`mb-2 ${variantClasses[variant]} ${positionClasses[position]} block w-[100px] rounded-full border-2 border-[#3c3933] p-3 shadow-md transition duration-300 sm:w-[150px]`}
+      className={`mb-2 ${variantClasses[variant]} ${positionClasses[position]} ${disabled && "cursor-not-allowed"} flex w-[100px] items-center justify-center space-x-5 rounded-full border-2 border-[#3c3933] p-3 shadow-md transition duration-300 sm:w-[150px]`}
+      disabled={disabled}
       {...rest}
     >
+      {isSubmitting && <LoaderIcon className="mr-2 animate-spin" />}
       {children}
     </button>
   );
@@ -30,6 +35,8 @@ const Button = ({
 Button.propTypes = {
   variant: PropTypes.string,
   position: PropTypes.string,
+  disabled: PropTypes.bool,
+  isSubmitting: PropTypes.bool,
   children: PropTypes.node.isRequired,
 };
 
