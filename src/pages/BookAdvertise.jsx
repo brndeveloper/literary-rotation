@@ -125,9 +125,9 @@ function BookAdvertisePage() {
   };
 
   return (
-    <div className="custom-scrollbar mx-auto flex h-screen max-w-screen-2xl flex-col">
+    <div className="custom-scrollbar flex h-screen max-w-screen-2xl flex-col md:mx-auto md:overflow-x-hidden">
       <Navbar />
-      <div className="mx-auto mt-5 flex flex-1 flex-col space-y-8">
+      <div className="ml-32 mt-5 flex w-full flex-1 flex-col space-y-8 sm:mr-24 sm:w-auto md:mx-auto md:w-auto">
         <h2 className="text-xl font-semibold">
           Insira algumas informações sobre seu livro
         </h2>
